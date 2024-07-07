@@ -17,6 +17,26 @@ import java.util.List;
 public class OrderDAO implements IShopManagement {
     private Connection conn = MySQLConnection.getConnection();
 
+    public Order getById(String id) {
+        PreparedStatement pstmt = null;
+        Order order = new Order();
+        String sql = "SELECT * FROM `order` WHERE Order_ID = ?";
+        try{
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                order.setId(rs.getString("id"));
+                order.setCus_id(rs.getInt("cus_id"));
+                order.setDateTime(Date.formatDateTime(rs.getString("datetime")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return order;
+    }
+
+
     @Override
     public List<Order> getAll() {
         PreparedStatement pstmt = null;

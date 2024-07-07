@@ -1,11 +1,9 @@
 package DAO;
 
 import Connection.MySQLConnection;
-import java.sql.Connection;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +14,25 @@ import Generic.IShopManagement;
 
 public class OrderDetailDAO implements IShopManagement {
     private Connection conn = MySQLConnection.getConnection();
+
+    public OrderDetail add(OrderDetail orderDetail) {
+        PreparedStatement pstmt = null;
+        String sql = "INSERT INTO orderdetail (id,order_id,product_id,quantity,status) VALUES (?, ?, ?, ?, ?)";
+        try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, orderDetail.getId());
+            pstmt.setString(2, orderDetail.getOrder_id());
+            pstmt.setString(3, orderDetail.getProduct_id());
+            pstmt.setInt(4, orderDetail.getQuantity());
+            pstmt.setString(5, orderDetail.getStatus().name());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return orderDetail;
+    }
+
+
 
     @Override
     public List<OrderDetail> getAll() {
