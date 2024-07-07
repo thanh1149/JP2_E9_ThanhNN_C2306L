@@ -1,17 +1,16 @@
 package Entity;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 public class Order {
     private String id;
-    private Customer customer;
+    private int cus_id;
     private LocalDateTime dateTime;
 
     public Order(){}
-    public Order(String id, Customer customer, LocalDateTime dateTime) {
+    public Order(String id, int cus_id, LocalDateTime dateTime) {
         this.id = id;
-        this.customer = customer;
+        this.cus_id = cus_id;
         this.dateTime = dateTime;
     }
 
@@ -23,15 +22,12 @@ public class Order {
         this.id = id;
     }
 
-    public Customer getCustomer() {
-        return customer;
-    }
-    public int getCustomerID() {
-        return customer.getId();
+    public int getCus_id() {
+        return cus_id;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCus_id(int cus_id) {
+        this.cus_id = cus_id;
     }
 
     public LocalDateTime getDateTime() {
@@ -46,7 +42,7 @@ public class Order {
     public String toString() {
         return "Order{" +
                 "id='" + id + '\'' +
-                ", customer=" + customer +
+                ", custome_idr=" + cus_id +
                 ", dateTime=" + dateTime +
                 '}';
     }

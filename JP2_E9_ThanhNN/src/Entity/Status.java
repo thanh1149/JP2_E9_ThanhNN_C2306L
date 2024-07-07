@@ -1,10 +1,10 @@
 package Entity;
 
 public enum Status {
-    Pending("Chờ xử lý"),
-    Complete("Đã hoàn thành"),
-    Cancel("Hủy"),
-    Paid("Đã thanh toán");
+    PENDING("Chờ xử lý"),
+    COMPLETE("Đã hoàn thành"),
+    CANCEL("Hủy"),
+    PAID("Đã thanh toán");
 
     private String status;
     Status(String status){
