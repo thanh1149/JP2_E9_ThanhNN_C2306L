@@ -25,10 +25,17 @@ public class Main {
 
         Order order = new Order();
         OrderDetail orderDetail = new OrderDetail();
+        Product product = new Product();
 
         Thread t1,t2,t3;
         String productID,orderID;
         int quantity,cus_id;
+
+        OrderThread orderThread = new OrderThread(order,product,orderDetail,orderDAO);
+        OrderDetailThread orderDetailThread = new OrderDetailThread(order, product,orderDetail,odsDAO);
+        ProductThread productThread = new ProductThread(product,orderDetail,productDAO);
+
+
 
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -81,9 +88,9 @@ public class Main {
             orderDetail.setQuantity(quantity);
             orderDetail.setStatus(Status.PENDING);
 
-            t1 = new Thread(new OrderThread(order, productDAO.getById(productID), orderDetail,orderDAO));
-            t2 = new Thread(new ProductThread(productDAO.getById(productID), orderDetail,productDAO));
-            t3 = new Thread(new OrderDetailThread(order, productDAO.getById(productID), orderDetail,odsDAO));
+            t1 = new Thread(orderThread);
+            t2 = new Thread(orderDetailThread);
+            t3 = new Thread(productThread);
 
             try{
                 t1.start();
@@ -97,12 +104,11 @@ public class Main {
             }
 
             System.out.println("New OrderDetail created: " + orderDetail);
-            orderDetailList.forEach(System.out::println);
-            orderList.forEach(System.out::println);
-            productList.forEach(System.out::println);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
-
+        orderDetailList.forEach(System.out::println);
+        orderList.forEach(System.out::println);
+        productList.forEach(System.out::println);
     }
 }
