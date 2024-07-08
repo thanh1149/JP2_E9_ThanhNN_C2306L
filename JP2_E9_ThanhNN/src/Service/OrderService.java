@@ -9,7 +9,6 @@ public abstract class OrderService {
     private Order order;
     private Product product;
     private OrderDetail orderDetail;
-    private OrderDAO orderDAO;
 
     protected OrderService(Order order,Product product,OrderDetail orderDetail){
         this.order = order;

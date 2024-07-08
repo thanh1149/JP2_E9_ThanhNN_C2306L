@@ -11,8 +11,6 @@ public abstract class OrderDetailService {
     private Order order;
     private Product product;
     private OrderDetail orderDetail;
-    public List<OrderDetail> orderDetails;
-//    private OrderDetailDAO orderDetailDAO;
 
     protected OrderDetailService(Order order,Product product,OrderDetail orderDetail){
         this.order = order;

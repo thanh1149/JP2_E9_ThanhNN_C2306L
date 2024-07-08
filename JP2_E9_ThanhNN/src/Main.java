@@ -27,15 +27,14 @@ public class Main {
         OrderDetail orderDetail = new OrderDetail();
         Product product = new Product();
 
-        Thread t1,t2,t3;
+        Thread t1,t2,t3,t4;
         String productID,orderID;
         int quantity,cus_id;
 
         OrderThread orderThread = new OrderThread(order,product,orderDetail,orderDAO);
         OrderDetailThread orderDetailThread = new OrderDetailThread(order, product,orderDetail,odsDAO);
         ProductThread productThread = new ProductThread(product,orderDetail,productDAO);
-
-
+        UpdataStatusThread updataStatusThread = new UpdataStatusThread(order,product,orderDetail,odsDAO);
 
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -91,14 +90,17 @@ public class Main {
             t1 = new Thread(orderThread);
             t2 = new Thread(orderDetailThread);
             t3 = new Thread(productThread);
+            t4 = new Thread(updataStatusThread);
 
             try{
                 t1.start();
-                t2.start();
-                t3.start();
                 t1.join();
+                t2.start();
                 t2.join();
+                t3.start();
                 t3.join();
+                t4.start();
+                t4.join();
             }catch(IOError |InterruptedException e){
                 System.out.println(e.getMessage());
             }

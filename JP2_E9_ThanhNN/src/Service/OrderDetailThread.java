@@ -34,18 +34,11 @@ public class OrderDetailThread extends OrderDetailService implements Runnable{
 
     @Override
     public List<OrderDetail> updateStatus() {
-        List<OrderDetail> updateOrderDetail = orderDetails.stream()
-                .filter(orderDetail -> "PENDING".equals(orderDetail.getStatus()))
-                .collect(Collectors.toList());
-
-        updateOrderDetail.forEach(orderDetail -> orderDetail.setStatus(Status.COMPLETE));
-
-        return updateOrderDetail;
+        return null;
     }
 
     @Override
     public void run() {
         addOrderDetail();
-        updateStatus();
     }
 }

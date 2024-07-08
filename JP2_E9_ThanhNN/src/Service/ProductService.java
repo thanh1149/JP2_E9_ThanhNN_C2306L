@@ -9,8 +9,6 @@ import java.util.List;
 public abstract class ProductService {
     private Product product;
     private OrderDetail orderDetail;
-    private List<Product> productList;
-//    private ProductDAO productDAO;
 
     public ProductService(Product product, OrderDetail orderDetail) {
         this.product = product;
@@ -23,13 +21,7 @@ public abstract class ProductService {
         return product;
     }
 
-    public Product findById(String id){
-        return productList.stream()
-                .filter(p->p.getId().equals(id))
-                .findFirst().orElse(null);
-    }
-
-    public void setProduct(Product product) {
+   public void setProduct(Product product) {
         this.product = product;
     }
 
