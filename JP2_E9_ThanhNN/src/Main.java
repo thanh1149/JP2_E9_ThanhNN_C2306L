@@ -6,7 +6,9 @@ import Entity.*;
 import Service.*;
 
 import java.io.BufferedReader;
+import java.io.IOError;
 import java.io.InputStreamReader;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Main {
@@ -21,11 +23,12 @@ public class Main {
         List<Order> orderList = orderDAO.getAll();
         List<OrderDetail> orderDetailList = odsDAO.getAll();
 
-        ShopService shopService = new ShopService();
+        Order order = new Order();
+        OrderDetail orderDetail = new OrderDetail();
 
         Thread t1,t2,t3;
         String productID,orderID;
-        int quantity;
+        int quantity,cus_id;
 
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -35,11 +38,20 @@ public class Main {
                 System.out.println("Wrong orderID");
                 return;
             }
-            Order order = shopService.checkOrderExist(orderID);
-            if (order == null) {
-                System.out.println("Order does not exist.");
+            if(orderDAO.getById(orderID) != null){
+                System.out.println("Order Id already exist.");
                 return;
             }
+
+            System.out.print("Enter customer id: ");
+            cus_id = Integer.parseInt(bufferedReader.readLine());
+            if(customerDAO.getById(cus_id) == null){
+                System.out.println("Customer not exist.");
+                return;
+            }
+            order.setId(orderID);
+            order.setCus_id(cus_id);
+            order.setDateTime(LocalDateTime.now());
 
             System.out.print("Enter Product ID: ");
             productID = bufferedReader.readLine();
@@ -48,6 +60,10 @@ public class Main {
                 return;
             }
 
+            if(productDAO.getById(productID) == null){
+                System.out.println("No product ID found.");
+                return;
+            }
             System.out.print("Enter Quantity: ");
             try {
                 quantity = Integer.parseInt(bufferedReader.readLine());
@@ -59,20 +75,28 @@ public class Main {
                 System.out.println("Invalid quantity entered.");
                 return;
             }
-            OrderDetail newOrderDetail = shopService.createOrderDetail(orderID,productID,quantity);
+            orderDetail.setId(0);
+            orderDetail.setOrder_id(orderID);
+            orderDetail.setProduct_id(productID);
+            orderDetail.setQuantity(quantity);
+            orderDetail.setStatus(Status.PENDING);
 
-            t1 = new Thread(new OrderThread(order, productDAO.getById(productID), newOrderDetail));
-            t2 = new Thread(new ProductThread(productDAO.getById(productID), newOrderDetail));
-            t3 = new Thread(new OrderDetailThread(order, productDAO.getById(productID), newOrderDetail));
+            t1 = new Thread(new OrderThread(order, productDAO.getById(productID), orderDetail));
+            t2 = new Thread(new ProductThread(productDAO.getById(productID), orderDetail));
+            t3 = new Thread(new OrderDetailThread(order, productDAO.getById(productID), orderDetail));
 
+            try{
+                t1.start();
+                t1.join();
+                t2.start();
+                t2.join();
+                t3.start();
+                t3.join();
+            }catch(IOError |InterruptedException e){
+                System.out.println(e.getMessage());
+            }
 
-            t1.start();
-            t1.join();
-            t2.start();
-            t2.join();
-            t3.start();
-            t3.join();
-            System.out.println("New OrderDetail created: " + newOrderDetail);
+            System.out.println("New OrderDetail created: " + orderDetail);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }

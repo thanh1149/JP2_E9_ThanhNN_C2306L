@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductDAO implements IShopManagement {
+public class ProductDAO implements IShopManagement<Product> {
     private Connection conn = MySQLConnection.getConnection();
 
     public Product getById(String id) {

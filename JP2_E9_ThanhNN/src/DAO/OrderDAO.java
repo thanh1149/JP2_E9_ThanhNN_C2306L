@@ -14,18 +14,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderDAO implements IShopManagement {
+public class OrderDAO implements IShopManagement<Order> {
     private Connection conn = MySQLConnection.getConnection();
 
     public Order getById(String id) {
         PreparedStatement pstmt = null;
-        Order order = new Order();
-        String sql = "SELECT * FROM `order` WHERE Order_ID = ?";
+        Order order = null;
+        String sql = "SELECT * FROM `order` WHERE id = ?";
         try{
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1,id);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
+                order = new Order();
                 order.setId(rs.getString("id"));
                 order.setCus_id(rs.getInt("cus_id"));
                 order.setDateTime(Date.formatDateTime(rs.getString("datetime")));

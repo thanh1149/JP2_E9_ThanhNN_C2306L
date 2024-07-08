@@ -12,7 +12,7 @@ import Entity.Product;
 import Entity.Status;
 import Generic.IShopManagement;
 
-public class OrderDetailDAO implements IShopManagement {
+public class OrderDetailDAO implements IShopManagement<OrderDetail> {
     private Connection conn = MySQLConnection.getConnection();
 
     public OrderDetail add(OrderDetail orderDetail) {

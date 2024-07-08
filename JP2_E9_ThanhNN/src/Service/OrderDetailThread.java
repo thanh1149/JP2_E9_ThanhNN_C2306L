@@ -5,13 +5,16 @@ import Entity.OrderDetail;
 import Entity.Product;
 import Entity.Status;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class OrderDetailThread extends OrderDetailService implements Runnable{
+    private List<OrderDetail> orderDetails;
 
     public OrderDetailThread(Order order, Product product, OrderDetail orderDetail) {
         super(order, product, orderDetail);
+        this.orderDetails = new ArrayList<>();
     }
 
     @Override

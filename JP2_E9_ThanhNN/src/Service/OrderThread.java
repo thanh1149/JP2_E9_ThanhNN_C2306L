@@ -4,6 +4,7 @@ import Entity.Order;
 import Entity.OrderDetail;
 import Entity.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderThread extends OrderService implements Runnable{
@@ -11,6 +12,7 @@ public class OrderThread extends OrderService implements Runnable{
 
     public OrderThread(Order order, Product product, OrderDetail orderDetail){
         super(order,product,orderDetail);
+        this.orders = new ArrayList<>();
     }
 
     @Override
