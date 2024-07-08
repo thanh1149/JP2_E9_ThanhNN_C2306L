@@ -81,22 +81,25 @@ public class Main {
             orderDetail.setQuantity(quantity);
             orderDetail.setStatus(Status.PENDING);
 
-            t1 = new Thread(new OrderThread(order, productDAO.getById(productID), orderDetail));
-            t2 = new Thread(new ProductThread(productDAO.getById(productID), orderDetail));
-            t3 = new Thread(new OrderDetailThread(order, productDAO.getById(productID), orderDetail));
+            t1 = new Thread(new OrderThread(order, productDAO.getById(productID), orderDetail,orderDAO));
+            t2 = new Thread(new ProductThread(productDAO.getById(productID), orderDetail,productDAO));
+            t3 = new Thread(new OrderDetailThread(order, productDAO.getById(productID), orderDetail,odsDAO));
 
             try{
                 t1.start();
-                t1.join();
                 t2.start();
-                t2.join();
                 t3.start();
+                t1.join();
+                t2.join();
                 t3.join();
             }catch(IOError |InterruptedException e){
                 System.out.println(e.getMessage());
             }
 
             System.out.println("New OrderDetail created: " + orderDetail);
+            orderDetailList.forEach(System.out::println);
+            orderList.forEach(System.out::println);
+            productList.forEach(System.out::println);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }

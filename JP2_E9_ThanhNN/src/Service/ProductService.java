@@ -1,5 +1,6 @@
 package Service;
 
+import DAO.ProductDAO;
 import Entity.OrderDetail;
 import Entity.Product;
 
@@ -9,6 +10,7 @@ public abstract class ProductService {
     private Product product;
     private OrderDetail orderDetail;
     private List<Product> productList;
+//    private ProductDAO productDAO;
 
     public ProductService(Product product, OrderDetail orderDetail) {
         this.product = product;

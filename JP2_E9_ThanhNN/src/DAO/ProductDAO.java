@@ -1,14 +1,13 @@
 package DAO;
 
 import Connection.MySQLConnection;
-import java.sql.Connection;
 
+import java.sql.*;
+
+import Entity.Order;
 import Entity.Product;
 import Generic.IShopManagement;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +32,22 @@ public class ProductDAO implements IShopManagement<Product> {
         }
         return product;
     }
+
+    public Product add(Product product) {
+        PreparedStatement pstmt = null;
+        String sql = "INSERT INTO product (id,name,quantity) VALUES (?, ?, ?)";
+        try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, product.getId());
+            pstmt.setString(2, product.getName());
+            pstmt.setInt(3, product.getQuantity());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return product;
+    }
+
 
     @Override
     public List<Product> getAll() {

@@ -1,5 +1,6 @@
 package Service;
 
+import DAO.OrderDetailDAO;
 import Entity.Order;
 import Entity.OrderDetail;
 import Entity.Product;
@@ -11,10 +12,12 @@ import java.util.stream.Collectors;
 
 public class OrderDetailThread extends OrderDetailService implements Runnable{
     private List<OrderDetail> orderDetails;
+    private OrderDetailDAO orderDetailDAO;
 
-    public OrderDetailThread(Order order, Product product, OrderDetail orderDetail) {
+    public OrderDetailThread(Order order, Product product, OrderDetail orderDetail, OrderDetailDAO orderDetailDAO) {
         super(order, product, orderDetail);
         this.orderDetails = new ArrayList<>();
+        this.orderDetailDAO = orderDetailDAO;
     }
 
     @Override
@@ -25,6 +28,7 @@ public class OrderDetailThread extends OrderDetailService implements Runnable{
         super.getOrderDetail().setQuantity(super.getOrderDetail().getQuantity());
         super.getOrderDetail().setStatus(super.getOrderDetail().getStatus());
         orderDetails.add(super.getOrderDetail());
+        orderDetailDAO.add(super.getOrderDetail());
         return super.getOrderDetail();
     }
 
